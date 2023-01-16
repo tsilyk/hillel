@@ -1,0 +1,366 @@
+Script started on 2023-01-16 23:05:30+00:00 [TERM="tmux-256color" TTY="/dev/pts/5" COLUMNS="193" LINES="53"]
+[01;32mrob@tester[00m:[01;34m~[00m$ systemctl status nginx81
+[?1h=[0;1;32m*[0m nginx81.service - A high performance web server and a reverse proxy server[m
+   Loaded: loaded (/etc/systemd/system/nginx81.service; enabled; vendor preset: enabled)[m
+   Active: [0;1;32mactive (running)[0m since Mon 2023-01-16 22:24:02 UTC; 41min ago[m
+     Docs: man:nginx(8)[m
+ Main PID: 6291 (nginx)[m
+    Tasks: 1 (limit: 4915)[m
+   Memory: 2.0M[m
+   CGroup: /system.slice/nginx81.service[m
+           |-6291 nginx: master process /usr/sbin/nginx -c /etc/nginx/nginx81.conf -g daemon on; master_process on;[m
+           `-6292 nginx: worker process[m
+[K[?1l>[01;32mrob@tester[00m:[01;34m~[00m$ systemctl status nginx811 2
+[?1h=[0;1;32m*[0m nginx82.service - A high performance web server and a reverse proxy server[m
+   Loaded: loaded (/etc/systemd/system/nginx82.service; enabled; vendor preset: enabled)[m
+   Active: [0;1;32mactive (running)[0m since Mon 2023-01-16 22:47:07 UTC; 18min ago[m
+     Docs: man:nginx(8)[m
+ Main PID: 6245 (nginx)[m
+    Tasks: 1 (limit: 4915)[m
+   Memory: 2.0M[m
+   CGroup: /system.slice/nginx82.service[m
+           |-6245 nginx: master process /usr/sbin/nginx -c /etc/nginx/nginx82.conf -g daemon on; master_process on;[m
+           `-6246 nginx: worker process[m
+[K[?1l>[01;32mrob@tester[00m:[01;34m~[00m$ systemctl status nginx82 3
+[?1h=[0;1;32m*[0m nginx83.service - A high performance web server and a reverse proxy server[m
+   Loaded: loaded (/etc/systemd/system/nginx83.service; enabled; vendor preset: enabled)[m
+   Active: [0;1;32mactive (running)[0m since Mon 2023-01-16 22:48:15 UTC; 17min ago[m
+     Docs: man:nginx(8)[m
+  Process: 8265 ExecStartPre=/usr/sbin/nginx -c /etc/nginx/nginx83.conf -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)[m
+  Process: 8266 ExecStart=/usr/sbin/nginx -c /etc/nginx/nginx83.conf -g daemon on; master_process on; (code=exited, status=0/SUCCESS)[m
+ Main PID: 8267 (nginx)[m
+    Tasks: 2 (limit: 4915)[m
+   Memory: 2.0M[m
+   CGroup: /system.slice/nginx83.service[m
+           |-8267 nginx: master process /usr/sbin/nginx -c /etc/nginx/nginx83.conf -g daemon on; master_process on;[m
+           `-8268 nginx: worker process[m
+[K[?1l>[01;32mrob@tester[00m:[01;34m~[00m$ cat /etc/systemd/system/nginx81.service
+# Stop dance for nginx
+# =======================
+#
+# ExecStop sends SIGSTOP (graceful stop) to the nginx process.
+# If, after 5s (--retry QUIT/5) nginx is still running, systemd takes control
+# and sends SIGTERM (fast shutdown) to the main process.
+# After another 5s (TimeoutStopSec=5), and if nginx is alive, systemd sends
+# SIGKILL to all the remaining processes in the process group (KillMode=mixed).
+#
+# nginx signals reference doc:
+# http://nginx.org/en/docs/control.html
+#
+[Unit]
+Description=A high performance web server and a reverse proxy server
+Documentation=man:nginx(8)
+After=network.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/run/nginx81.pid
+ExecStartPre=/usr/sbin/nginx -c /etc/nginx/nginx81.conf -t -q -g 'daemon on; master_process on;'
+ExecStart=/usr/sbin/nginx -c /etc/nginx/nginx81.conf  -g 'daemon on; master_process on;'
+ExecReload=/usr/sbin/nginx -c /etc/nginx/nginx81.conf  -g 'daemon on; master_process on;' -s reload
+ExecStop=-/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/nginx81.pid
+TimeoutStopSec=5
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
+[01;32mrob@tester[00m:[01;34m~[00m$ [Kcat /etc/systemd/system/nginx81.service[1P[1@2
+# Stop dance for nginx
+# =======================
+#
+# ExecStop sends SIGSTOP (graceful stop) to the nginx process.
+# If, after 5s (--retry QUIT/5) nginx is still running, systemd takes control
+# and sends SIGTERM (fast shutdown) to the main process.
+# After another 5s (TimeoutStopSec=5), and if nginx is alive, systemd sends
+# SIGKILL to all the remaining processes in the process group (KillMode=mixed).
+#
+# nginx signals reference doc:
+# http://nginx.org/en/docs/control.html
+#
+[Unit]
+Description=A high performance web server and a reverse proxy server
+Documentation=man:nginx(8)
+After=network.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/run/nginx82.pid
+ExecStartPre=/usr/sbin/nginx -c /etc/nginx/nginx82.conf -t -q -g 'daemon on; master_process on;'
+ExecStart=/usr/sbin/nginx -c /etc/nginx/nginx82.conf  -g 'daemon on; master_process on;'
+ExecReload=/usr/sbin/nginx -c /etc/nginx/nginx82.conf  -g 'daemon on; master_process on;' -s reload
+ExecStop=-/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/nginx82.pid
+TimeoutStopSec=5
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
+[01;32mrob@tester[00m:[01;34m~[00m$ [Kcat /etc/systemd/system/nginx82.service[1P[1@3
+# Stop dance for nginx
+# =======================
+#
+# ExecStop sends SIGSTOP (graceful stop) to the nginx process.
+# If, after 5s (--retry QUIT/5) nginx is still running, systemd takes control
+# and sends SIGTERM (fast shutdown) to the main process.
+# After another 5s (TimeoutStopSec=5), and if nginx is alive, systemd sends
+# SIGKILL to all the remaining processes in the process group (KillMode=mixed).
+#
+# nginx signals reference doc:
+# http://nginx.org/en/docs/control.html
+#
+[Unit]
+Description=A high performance web server and a reverse proxy server
+Documentation=man:nginx(8)
+After=network.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/run/nginx83.pid
+ExecStartPre=/usr/sbin/nginx -c /etc/nginx/nginx83.conf -t -q -g 'daemon on; master_process on;'
+ExecStart=/usr/sbin/nginx -c /etc/nginx/nginx83.conf  -g 'daemon on; master_process on;'
+ExecReload=/usr/sbin/nginx -c /etc/nginx/nginx83.conf  -g 'daemon on; master_process on;' -s reload
+ExecStop=-/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/nginx83.pid
+TimeoutStopSec=5
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
+[01;32mrob@tester[00m:[01;34m~[00m$ [Kcat /etc/nginx/nginx81.conf
+user www-data;
+worker_processes auto;
+pid /run/nginx81.pid;
+
+events {
+	worker_connections 768;
+}
+
+http {
+	sendfile on;
+	tcp_nopush on;
+	tcp_nodelay on;
+	keepalive_timeout 65;
+	types_hash_max_size 2048;
+
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	access_log /var/www/host81/logs/access.log;
+	error_log /var/www/host81/logs/error.log;
+
+	gzip on;
+
+	server {
+		listen 81;
+		root /var/www/host81/html;
+		index index.php index.html index.htm;
+		server_name _;
+		location / {
+			try_files $uri $uri/ =404;
+		}
+		location ~ \.php$ {
+			include snippets/fastcgi-php.conf;
+			fastcgi_pass unix:/run/php/php7.3-host81-fpm.sock;
+		}
+	}
+}
+[01;32mrob@tester[00m:[01;34m~[00m$ [Kcat /etc/nginx/nginx81.conf[1P[1@2
+user www-data;
+worker_processes auto;
+pid /run/nginx82.pid;
+
+events {
+	worker_connections 768;
+}
+
+http {
+	sendfile on;
+	tcp_nopush on;
+	tcp_nodelay on;
+	keepalive_timeout 65;
+	types_hash_max_size 2048;
+
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	access_log /var/www/host82/logs/access.log;
+	error_log /var/www/host82/logs/error.log;
+
+	gzip on;
+
+	server {
+		listen 82;
+		root /var/www/host82/html;
+		index index.php index.html index.htm;
+		server_name _;
+		location / {
+			try_files $uri $uri/ =404;
+		}
+		location ~ \.php$ {
+			include snippets/fastcgi-php.conf;
+			fastcgi_pass unix:/run/php/php7.3-host82-fpm.sock;
+		}
+	}
+}
+[01;32mrob@tester[00m:[01;34m~[00m$ [Kcat /etc/nginx/nginx82.conf2[1P[1@3
+user www-data;
+worker_processes auto;
+pid /run/nginx83.pid;
+
+events {
+	worker_connections 768;
+}
+
+http {
+	sendfile on;
+	tcp_nopush on;
+	tcp_nodelay on;
+	keepalive_timeout 65;
+	types_hash_max_size 2048;
+
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	access_log /var/www/host83/logs/access.log;
+	error_log /var/www/host83/logs/error.log;
+
+	gzip on;
+
+	server {
+		listen 83;
+		root /var/www/host83/html;
+		index index.php index.html index.htm;
+		server_name _;
+		location / {
+			try_files $uri $uri/ =404;
+		}
+		location ~ \.php$ {
+			include snippets/fastcgi-php.conf;
+			fastcgi_pass unix:/run/php/php7.3-host83-fpm.sock;
+		}
+	}
+}
+[01;32mrob@tester[00m:[01;34m~[00m$ [Ksystemctl status php7.3-fpm status
+[?1h=Unit status.service could not be found.[m
+[0;1;32m*[0m php7.3-fpm.service - The PHP 7.3 FastCGI Process Manager[m
+   Loaded: loaded (/lib/systemd/system/php7.3-fpm.service; enabled; vendor preset: enabled)[m
+   Active: [0;1;32mactive (running)[0m since Mon 2023-01-16 22:54:52 UTC; 11min ago[m
+     Docs: man:php-fpm7.3(8)[m
+ Main PID: 17403 (php-fpm7.3)[m
+   Status: "Processes active: 0, idle: 8, Requests: 0, slow: 0, Traffic: 0req/sec"[m
+    Tasks: 9 (limit: 4915)[m
+   Memory: 9.4M[m
+   CGroup: /system.slice/php7.3-fpm.service[m
+           |-17403 php-fpm: master process (/etc/php/7.3/fpm/php-fpm.conf)[m
+           |-17404 php-fpm: pool host81[m
+           |-17405 php-fpm: pool host81[m
+           |-17406 php-fpm: pool host82[m
+           |-17407 php-fpm: pool host82[m
+           |-17408 php-fpm: pool host83[m
+           |-17409 php-fpm: pool host83[m
+           |-17410 php-fpm: pool www[m
+           `-17411 php-fpm: pool www[m
+[K[?1l>[01;32mrob@tester[00m:[01;34m~[00m$ [Kcat /etc/php/7.3/fpm/pool.d/host8?.conf
+[host81]
+user = www-data
+group = www-data
+listen = /run/php/php7.3-host81-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+chdir = /
+env[TMP] = /var/www/host81/tmp
+env[TMPDIR] = /var/www/host81/tmp
+env[TEMP] = /var/www/host81/tmp
+[host82]
+user = www-data
+group = www-data
+listen = /run/php/php7.3-host82-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+chdir = /
+env[TMP] = /var/www/host82/tmp
+env[TMPDIR] = /var/www/host82/tmp
+env[TEMP] = /var/www/host82/tmp
+[host83]
+user = www-data
+group = www-data
+listen = /run/php/php7.3-host83-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+chdir = /
+env[TMP] = /var/www/host83/tmp
+env[TMPDIR] = /var/www/host83/tmp
+env[TEMP] = /var/www/host83/tmp
+[01;32mrob@tester[00m:[01;34m~[00m$ [Ktree /var/www/
+[01;34m/var/www/[00m
+|-- [01;34mhost81[00m
+|   |-- [01;34mhtml[00m
+|   |   |-- index.html
+|   |   |-- index.php
+|   |   `-- info.php
+|   |-- [01;34mlogs[00m
+|   |   |-- access81.log
+|   |   `-- error81.log
+|   `-- [34;42mtmp[00m
+|-- [01;34mhost82[00m
+|   |-- [01;34mhtml[00m
+|   |   |-- index.html
+|   |   |-- index.php
+|   |   `-- info.php
+|   |-- [01;34mlogs[00m
+|   |   |-- access.log
+|   |   |-- access81.log
+|   |   |-- error.log
+|   |   `-- error81.log
+|   `-- [34;42mtmp[00m
+|-- [01;34mhost83[00m
+|   |-- [01;34mhtml[00m
+|   |   |-- index.html
+|   |   |-- index.php
+|   |   `-- info.php
+|   |-- [01;34mlogs[00m
+|   |   |-- access.log
+|   |   |-- access81.log
+|   |   |-- error.log
+|   |   `-- error81.log
+|   `-- [34;42mtmp[00m
+`-- [01;34mhtml[00m
+    `-- index.nginx-debian.html
+
+13 directories, 20 files
+[01;32mrob@tester[00m:[01;34m~[00m$ cat /var/www/host8?/html/index.php
+<?php
+echo("temp dir path: ".sys_get_temp_dir()."\n");
+
+?>
+<?php
+echo("temp dir path: ".sys_get_temp_dir()."\n");
+
+?>
+<?php
+echo("temp dir path: ".sys_get_temp_dir()."\n");
+
+?>
+[01;32mrob@tester[00m:[01;34m~[00m$ [Kcurl hr ttp://localhost:81/
+temp dir path: /var/www/host81/tmp
+[01;32mrob@tester[00m:[01;34m~[00m$ curl http://localhost:81/[1P/2/
+temp dir path: /var/www/host82/tmp
+[01;32mrob@tester[00m:[01;34m~[00m$ curl http://localhost:82/[1P/3/
+temp dir path: /var/www/host83/tmp
+[01;32mrob@tester[00m:[01;34m~[00m$ exit
+exit
+
+Script done on 2023-01-16 23:07:26+00:00 [COMMAND_EXIT_CODE="0"]
