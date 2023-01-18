@@ -1,0 +1,70 @@
+sudo apt install systemd-container
+sudo apt install debootstrap
+
+
+
+ sudo systemd-nspawn -D /var/lib/machines/buster1/ --machine buster1 -b
+
+  machinectl list-images
+
+
+  sudo machinectl start buster1
+
+  machinectl status buster1
+
+   systemctl status systemd-nspawn@buster1.service
+
+   sudo machinectl login buster1
+
+   sudo machinectl stop buster1
+
+   systemctl status systemd-nspawn@buster1.service
+   Ctrl-]]]
+
+   systemctl edit --full --force buster1.service
+   [Unit]
+   Description=Buster1 Container
+   [Service]
+   LimitNOFILE=100000
+   ExecStart=/usr/bin/systemd-nspawn --machine=buster1
+   --directory=/var/lib/machines/buster1/ -b
+   --network-ipvlan=eth0
+   Restart=always
+   [Install]
+   Also=dbus.service
+   WantedBy=default.target
+
+   sudo machinectl start buster1
+
+   sudo machinectl login buster1
+
+   systemctl edit --full --force buster1.service
+
+   https://serverfault.com/questions/1046986/failed-to-get-shell-pty-protocol-error-for-an-nspawn-container-with-systemd-i
+
+   debootstrap --include=systemd,dbus unstable
+   /var/lib/machines/debiancontainer
+
+   systemd-nspawn --machine debiancontainer
+   machinectl list
+
+   -------
+   debootstrap --include=systemd-container --components=main,universe buster
+   debian10  https://deb.debian.org/debian/
+
+    machinectl login debian10
+
+    cat /etc/network/interfaces
+    ip a
+    cd /var/lib/machines
+    ls -la
+    systemctl status debian10
+    systemctl start debian10
+    systemctl cat debian10
+
+    machinectl login debian10
+    cat /etc/network/interfaces
+    ip a
+    ping bbc.com
+
+
