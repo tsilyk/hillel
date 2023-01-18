@@ -1,0 +1,200 @@
+
+ps xawf
+
+systemd-analyze
+
+systemd-analyze blame
+
+systemd-analyze critical-chain
+
+systemd-analyze plot > ~/hillel/bootup.svg
+
+systemd-analyze dot --to-pattern='*.target' --from-pattern='*.target' | dot
+-Tsvg > ~/hillel/targets.svg
+
+pstree
+
+isystemctl show-environment
+
+isystemctl status sshd.service
+
+ls /lib/systemd/system | wc -l
+
+ls /etc/systemd/system | wc -l
+
+systemctl show sshd.service
+
+systemctl show sshd.service -p ExecMainPID
+
+systemctl show sshd.service -p ExecMainPID --value
+
+sudo apt install cups
+
+systemctl status cups
+
+sudo systemctl stop cups
+
+sudo systemctl start cups
+
+systemctl cat cups.service
+
+systemctl show cups -p MemoryMax
+
+sudo systemctl set-property cups MemoryMax=2G
+
+systemctl show cups -p MemoryMax
+
+systemctl cat cups.service
+
+sudo rm -rf /etc/systemd/system.control/cups.service.d
+
+sudo systemctl daemon-reload
+
+sudo systemctl restart cups.service
+
+sudo systemctl cat cups.service
+
+sudo systemctl status cups.service
+
+runlevel
+
+systemctl list-units -t target | grep graphical
+
+systemctl list-units -t target --all
+
+sudo systemctl isolate basic.target
+
+systemctl cat multi-user.target
+
+ls -laFG /sbin/{halt,poweroff,reboot,shutdown}
+
+ls -l /lib/systemd/system | wc -l
+
+ls -l /run/systemd/system | wc -l
+
+ls -l /etc/systemd/system | wc -l
+
+ls -l /etc/systemd/system
+
+sudo systemd-run --on-active=45 date >> /tmp/date.log
+
+systemctl list-timers
+
+systemd-analyze calendar "*-*-* 00:00:00"
+
+systemd-analyze calendar "Mon *-*-* 00:00:00"
+
+systemd-analyze calendar "Mon-Fri,Sun *-*-* 03:33:33"
+
+systemd-analyze calendar "*-*-* *:20/15:00"
+
+systemd-analyze calendar weekly
+
+systemd-analyze calendar "*-02~02"
+
+systemctl list-timers
+
+systemctl cat fstrim.timer
+
+systemctl cat fstrim.service
+
+systemd-analyze calendar hourly
+
+systemd-analyze calendar daily
+
+systemd-analyze calendar weekly
+
+systemd-analyze calendar monthly
+
+systemd-analyze calendar "*-*-* 09..17:00/5"
+
+systemd-analyze calendar "Mon..Fri *-*-* 09..17:00/5"
+
+sudo systemctl edit --full --force blahwoof.timer
+[Unit]
+Description=Run the blahwoof service every 5
+seconds
+[Timer]
+OnCalendar=*-*-* *:*:0/5
+AccuracySec=1s
+[Install]
+WantedBy=timers.target
+
+sudo systemctl edit --full --force blahwoof.service
+[Unit]
+Description=Write a quick entry to the systemd journal
+[Service]
+Type=oneshot
+User=cloud_user
+ExecStart="/home/cloud_user/journo.sh"
+[Install]
+WantedBy=blahwoof.timer
+
+systemctl list-timers
+
+sudo systemctl enable blahwoof.timer
+
+sudo systemctl start blahwoof.timer
+
+systemctl status blahwoof.timer
+
+sudo journalctl --follow
+
+chmod +x hillel/datalog.sh
+
+sudo journalctl --follow
+
+journalctl
+
+sudo journalctl
+
+sudo journalctl --list-boots
+
+sudo journalctl -b 0
+
+sudo journalctl -u dbus.service
+
+systemd-cgls
+
+sudo journalctl _SYSTEMD_CGROUP=/user.slice/user-1001.slice/session-1.scope
+
+sudo journalctl --since=today
+
+sudo journalctl --since=-5m
+
+sudo journalctl --since="2023-01-15 16:31" --until=now
+
+sudo journalctl _UID=1000
+
+sudo journalctl -x
+
+journalctl --list-catalog
+
+journalctl --disk-usage
+
+sudo journalctl --disk-usage
+
+
+sudo apt install systemd-container
+
+sudo apt install debootstrap
+
+sudo debootstrap --arch=amd64 buster /var/lib/machines/buster1
+
+sudo debootstrap --arch=amd64 jammy /var/lib/machines/jammy1
+
+bootstrap --include=systemd-container --components=main,universe codename
+jammy http://archive.ubuntu.com/ubuntu/
+
+ apt install debootstrap ubuntu-keyring systemd-container
+ debian-archive-keyring
+
+
+sudo debootstrap --arch=amd64 buster /var/lib/machines/buster1
+sudo systemd-nspawn -D /var/lib/machines/buster1 --machine buster1
+
+sudo systemd-nspawn -D /var/lib/machines/buster1/ --machine buster1 -b
+
+script -t/home/rob/hillel/dz5.script.time /home/rob/hillel/dz5.script
+
+

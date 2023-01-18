@@ -1,0 +1,155 @@
+Script started on 2023-01-18 19:28:49+02:00 [TERM="tmux-256color" TTY="/dev/pts/0" COLUMNS="147" LINES="53"]
+root@gitea-storage:~# cat /etc/network/interfaces
+M
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug ens18
+iface ens18 inet static
+	address 192.168.5.33/24
+	gateway 192.168.5.254
+	# dns-* options are implemented by the resolvconf package, if installed
+	dns-nameservers 8.8.8.8 1.1.1.1
+	dns-search eq.org.ua
+root@gitea-storage:~# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: ens18: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 16:c2:9b:ae:7b:28 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.5.33/24 brd 192.168.5.255 scope global ens18
+       valid_lft forever preferred_lft forever
+    inet6 fe80::14c2:9bff:feae:7b28/64 scope link 
+       valid_lft forever preferred_lft forever
+root@gitea-storage:~# cd /var/lib/machines
+M
+root@gitea-storage:/var/lib/machines# ls -la
+total 24
+drwx------  6 root       root       4096 Jan 18 19:27 .
+drwxr-xr-x 26 root       root       4096 Jan 17 18:45 ..
+drwxr-xr-x 17 1179713536 1179713536 4096 Jan 17 18:53 buster1
+drwxr-xr-x 17 root       root       4096 Jan 18 18:34 debian10
+drwxr-xr-x 17  360513536  360513536 4096 Jan 18 17:49 debiancontainer
+drwxr-xr-x  2 root       root       4096 Jan 17 18:50 jammy1
+root@gitea-storage:/var/lib/machines# systemctl status debian10
+M
+[?1h=● debian10.service - Buster1 Container[m
+   Loaded: loaded (/etc/systemd/system/debian10.service; disabled; vendor preset: enabled)[m
+   Active: inactive (dead)[m
+[m
+Jan 18 19:27:15 gitea-storage systemd-nspawn[9176]: [  OK  ] Stopped Create Static Device Nodes in /dev.[m
+Jan 18 19:27:15 gitea-storage systemd-nspawn[9176]: [  OK  ] Stopped Create System Users.[m
+Jan 18 19:27:15 gitea-storage systemd-nspawn[9176]: [  OK  ] Stopped Remount Root and Kernel File Systems.[m
+Jan 18 19:27:15 gitea-storage systemd-nspawn[9176]: [  OK  ] Stopped target Swap.[m
+Jan 18 19:27:15 gitea-storage systemd-nspawn[9176]: [  OK  ] Reached target Shutdown.[m
+Jan 18 19:27:15 gitea-storage systemd-nspawn[9176]: [  OK  ] Reached target Final Step.[m
+Jan 18 19:27:15 gitea-storage systemd-nspawn[9176]:          Starting Halt...[m
+Jan 18 19:27:15 gitea-storage systemd-nspawn[9176]: Container debian10 has been shut down.[m
+Jan 18 19:27:15 gitea-storage systemd[1]: debian10.service: Succeeded.[m
+Jan 18 19:27:15 gitea-storage systemd[1]: Stopped Buster1 Container.[m
+[K[?1l>root@gitea-storage:/var/lib/machines# systemctl start debian10
+M
+root@gitea-storage:/var/lib/machines# 
+root@gitea-storage:/var/lib/machines# [Kroot@gitea-storage:/var/lib/machines# [Kroot@gitea-storage:/var/lib/machines# systemctl start debian10[1@tus[C[C[C[C[C[C[C[C[C
+[?1h=[0;1;32m●[0m debian10.service - Buster1 Container[m
+   Loaded: loaded (/etc/systemd/system/debian10.service; disabled; vendor preset: enabled)[m
+   Active: [0;1;32mactive (running)[0m since Wed 2023-01-18 19:29:28 EET; 6s ago[m
+ Main PID: 9314 (systemd-nspawn)[m
+    Tasks: 1 (limit: 2358)[m
+   Memory: 1.8M[m
+   CGroup: /system.slice/debian10.service[m
+           └─9314 /usr/bin/systemd-nspawn --machine=debian10 --directory=/var/lib/machines/debian10/ -b --network-ipvlan=ens18[m
+[m
+Jan 18 19:29:28 gitea-storage systemd-nspawn[9314]: [  OK  ] Reached target Login Prompts.[m
+Jan 18 19:29:29 gitea-storage systemd-nspawn[9314]: [  OK  ] Started Login Service.[m
+Jan 18 19:29:29 gitea-storage systemd-nspawn[9314]: [  OK  ] Started System Logging Service.[m
+Jan 18 19:29:29 gitea-storage systemd-nspawn[9314]: [  OK  ] Reached target Multi-User System.[m
+Jan 18 19:29:29 gitea-storage systemd-nspawn[9314]: [  OK  ] Reached target Graphical Interface.[m
+Jan 18 19:29:29 gitea-storage systemd-nspawn[9314]:          Starting Update UTMP about System Runlevel Changes...[m
+Jan 18 19:29:29 gitea-storage systemd-nspawn[9314]: [  OK  ] Started Update UTMP about System Runlevel Changes.[m
+Jan 18 19:29:30 gitea-storage systemd-nspawn[9314]: [2B blob data][m
+Jan 18 19:29:30 gitea-storage systemd-nspawn[9314]: Debian GNU/Linux 10 debian10 console[m
+Jan 18 19:29:30 gitea-storage systemd-nspawn[9314]: [1B blob data][m
+[K[?1l>root@gitea-storage:/var/lib/machines# systemctl cat debian10
+M
+[?1h=[0;1;34m# /etc/systemd/system/debian10.service[0m[m
+[Unit][m
+Description=Buster1 Container[m
+[Service][m
+LimitNOFILE=100000[m
+ExecStart=/usr/bin/systemd-nspawn --machine=debian10 --directory=/var/lib/machines/debian10/ -b --network-ipvlan=ens18[m
+Restart=always[m
+[Install][m
+Also=dbus.service[m
+WantedBy=default.target[m
+[K[?1l>root@gitea-storage:/var/lib/machines# machinectl login debian10
+M
+Connected to machine debian10. Press ^] three times within 1s to exit session.
+
+Debian GNU/Linux 10 debian10 pts/0
+
+debian10 login: rob
+Password: 
+Last login: Wed Jan 18 19:06:29 EET 2023 on pts/0
+Linux debian10 4.19.0-23-amd64 #1 SMP Debian 4.19.269-1 (2022-12-20) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+rob@debian10:~$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: iv-ens18: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/ether 16:c2:9b:ae:7b:28 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.5.101/24 brd 192.168.5.255 scope global iv-ens18
+       valid_lft forever preferred_lft forever
+    inet6 fe80::16c2:9b00:1ae:7b28/64 scope link 
+       valid_lft forever preferred_lft forever
+rob@debian10:~$ cat /etc/network/interfaces
+# interfaces(5) file used by ifup(8) and ifdown(8)
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
+
+auto iv-ens18
+iface iv-ens18 inet static
+        address 192.168.5.101/24
+        gateway 192.168.5.254
+
+rob@debian10:~$ ping bbc.com
+PING bbc.com (151.101.0.81) 56(84) bytes of data.
+64 bytes from 151.101.0.81 (151.101.0.81): icmp_seq=1 ttl=57 time=26.3 ms
+64 bytes from 151.101.0.81 (151.101.0.81): icmp_seq=2 ttl=57 time=26.3 ms
+64 bytes from 151.101.0.81 (151.101.0.81): icmp_seq=3 ttl=57 time=26.3 ms
+^C
+--- bbc.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 5ms
+rtt min/avg/max/mdev = 26.267/26.289/26.332/0.030 ms
+rob@debian10:~$ exit
+logout
+
+Debian GNU/Linux 10 debian10 pts/0
+
+debian10 login: 
+debian10 login: 
+Connection to machine debian10 terminated.
+root@gitea-storage:/var/lib/machines# exit
+exit
+
+Script done on 2023-01-18 19:30:37+02:00 [COMMAND_EXIT_CODE="0"]

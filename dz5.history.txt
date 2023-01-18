@@ -1,0 +1,202 @@
+  905  systemd-analyze blame
+  906  systemd-analyze critical-chain 
+  907  systemd-analyze plot 
+  908  systemd-analyze plot > ~/hillel/bootup.svg
+  909  systemd-analyze dot --to-pattern='*.target' --from-pattern='*.target' | dot -Tsvg > ~/hillel/targets.svg
+  910  sudo apt install graphviz
+  911  systemd-analyze dot --to-pattern='*.target' --from-pattern='*.target' | dot -Tsvg > ~/hillel/targets.svg
+  912  pstree
+  913  systemctl show-environment
+  914  systemctl status sshd.service
+  915  ls /lib/systemd/system | wc -l
+  916  ls /etc/systemd/system | wc -l
+  917  systemctl show sshd.service
+  918  systemctl show nginx81.service 
+  919  systemctl show sshd.service -p ExecMainPID
+  920  systemctl show sshd.service -p ExecMainPID --value
+  921  sudo apt install cups
+  922  systemctl status cups
+  923  sudo systemctl stop cups
+  924  systemctl status cups
+  925  sudo systemctl start cups
+  926  systemctl cat cups.service
+  927  systemctl show cups -p MemoryMax
+  928  sudo systemctl set-property cups
+  929  sudo systemctl set-property cups MemoryMax=2G
+  930  sudo systemctl set-property cups
+  931  systemctl show cups -p MemoryMax
+  932  systemctl cat cups.service
+  933  systemctl show cups -p MemoryMax
+  934  sudo systemctl stop cups.service
+  935  sudo rm -rf
+  936  ls -la
+  937  sudo rm -rf sudo rm -rf
+  938  sudo rm -rf /etc/systemd/system.control/cups.service.d
+  939  sudo systemctl daemon-reload
+  940  sudo systemctl restart cups.service
+  941  sudo systemctl cat cups.service
+  942  sudo systemctl status cups.service
+  943  runlevel
+  944  systemctl list-units -t target | grep
+  945  graphical
+  946  systemctl list-units -t target | grep grapgical
+  947  systemctl list-units -t target | grep graphical
+  948  systemctl list-units -t target --all
+  949  sudo systemctl isolate basic.target
+  950  systemctl status basic.target
+  951  systemctl cat basic.target
+  952  systemctl cat multi-user.target
+  953  ls /sbin/{halt,poweroff,reboot,shutdown}
+  954  ls -laFG /sbin/{halt,poweroff,reboot,shutdown}
+  955  ls -l /sbin/{halt,poweroff,reboot,shutdown}
+  956  ls -l /lib/systemd/system | wc -l
+  957  ls -l /run/systemd/system | wc -l
+  958  ls -l /etc/systemd/system | wc -l
+  959  ls -l /etc/systemd/system
+  960  date > /tmp/date.log
+  961  cat /tmp/date.log 
+  962  systemctl list-timers
+  963  cat /tmp/date.log 
+  964  systemctl list-timers
+  965  systemd-run --on-active=45 date > /tmp/date.log
+  966  systemctl list-timers
+  967  rm /tmp/date.log 
+  968  systemctl list-timers
+  969  systemd-run --on-active=45 date >> /tmp/date.log
+  970  sudo systemd-run --on-active=45 date >> /tmp/date.log
+  971  systemctl list-timers
+  972  cat /tmp/date.log 
+  973  systemctl list-timers
+  974  systemd-analyze calendar "*-*-* 00:00:00"
+  975  systemd-analyze calendar "Non *-*-* 00:00:00"
+  976  systemd-analyze calendar "Mon *-*-* 00:00:00"
+  977  systemd-analyze calendar "Mon-Fri, Sun *-*-* 03:33:33"
+  978  systemd-analyze calendar "Mon-Fri,Sun *-*-* 03:33:33"
+  979  systemd-analyze calendar "*-*-* *:20/15:00"
+  980  systemd-analyze calendar weekly
+  981  systemd-analyze calendar "*-02~02"
+  982  systemctl list-timers
+  983  systemctl cat fstrim.timer
+  984  systemctl cat fstrim.service
+  985  systemd-analyze calendar hourly
+  986  systemd-analyze calendar daily
+  987  systemd-analyze calendar weekly
+  988  systemd-analyze calendar monthly
+  989  systemd-analyze calendar "*-*-*
+09..17:00/5"
+  990  systemd-analyze calendar "*-*-*  09..17:00/5"
+  991  systemd-analyze calendar "*-*-* 09..17:00/5"
+  992  systemd-analyze calendar "Mon..Fri
+*-*-* 09..17:00/5"
+  993  systemd-analyze calendar "Mon..Fri  *-*-* 09..17:00/5"
+  994  systemd-analyze calendar "Mon..Fri *-*-* 09..17:00/5"
+  995  sudo systemctl edit --full --force
+  996  sudo systemctl edit --full --force blahwoof.timer
+  997  sudo systemctl edit --full --force blahwoof.service
+  998  sudo systemctl edit --full --force blahwoof.timer
+  999  systemctl list-timers
+ 1000  sudo systemctl enable
+ 1001  sudo systemctl enable blahwoof.timer
+ 1002  sudo systemctl edit --full --force blahwoof.timer
+ 1003  sudo systemctl enable blahwoof.timer
+ 1004  sudo systemctl start blahwoof.timer
+ 1005  systemctl status blahwoof.timer 
+ 1006  journalctl --follow
+ 1007  chmod a+x ~/journo.sh
+ 1008  journalctl --follow
+ 1009  sudo systemctl edit --full --force blahwoof.timer
+ 1010  sudo systemctl edit --full --force blahwoof.service
+ 1011  vi /home/rob/hillel/datalog.sh
+ 1012  chmod +x hillel/datalog.sh 
+ 1013  sudo systemctl edit --full --force blahwoof.service
+ 1014  systemctl list-timers
+ 1015  journalctl --follow
+ 1016  sudo systemctl start blahwoof.timer
+ 1017  sudo systemctl restart blahwoof.timer
+ 1018  systemctl status blahwoof.timer
+ 1019  systemctl restart blahwoof.timer
+ 1020  systemctl status blahwoof.timer
+ 1021  systemctl stop blahwoof.timer
+ 1022  systemctl status blahwoof.timer
+ 1023  systemctl restart blahwoof.timer
+ 1024  systemctl status blahwoof.timer
+ 1025  journalctl --follow
+ 1026  sudo journalctl --follow
+ 1027  cat /tmp/date.log 
+ 1028  vi hillel/datalog.sh 
+ 1029  ./hillel/datalog.sh 
+ 1030  vi hillel/datalog.sh 
+ 1031  ./hillel/datalog.sh 
+ 1032  vi hillel/datalog.sh 
+ 1033  man continue
+ 1034  continue 
+ 1035  ./hillel/datalog.sh 
+ 1036  vi hillel/datalog.sh 
+ 1037  ./hillel/datalog.sh 
+ 1038  sudo journalctl --follow
+ 1039  ls /home/rob/hillel/datalog.sh
+ 1040  systemctl status blahwoof.service 
+ 1041  systemctl restart blahwoof.service 
+ 1042  journalctl -xe
+ 1043  sudo journalctl -xe
+ 1044  cat  Failed to determine user credentials: No such process
+ 1045  sudo systemctl edit --full --force blahwoof.service
+ 1046  sudo journalctl -xe
+ 1047  systemctl restart blahwoof.service 
+ 1048  vi hillel/datalog.sh 
+ 1049  systemctl restart blahwoof.service 
+ 1050  sudo journalctl --follow
+ 1051  journalctl
+ 1052  sudo journalctl
+ 1053  sudo journalctl --list-boots
+ 1054  sudo journalctl --list-boots -b 0
+ 1055  sudo journalctl --list-boots -b 100
+ 1056  sudo journalctl -b 0
+ 1057  sudo journalctl --list-boots -
+ 1058  sudo journalctl --list-boots 
+ 1059  sudo journalctl -u dbus.service
+ 1060  sudo journalctl -u dbus.service --follow
+ 1061  systemd-cgls
+ 1062  sudo journalctl
+ 1063  sudo journalctl _SYSTEMD_CGROUP=/user.slice/user-1001.slice/session-1.scope
+ 1064  sudo journalctl --since=today
+ 1065  sudo journalctl --since=-5m
+ 1066  sudo journalctl --since="2023-01-06 16:31" --until=now
+ 1067  sudo journalctl --since="2023-01-15 16:31" --until=now
+ 1068  id
+ 1069  sudo journalctl _UID=1000
+ 1070  sudo journalctl _UID=${id}
+ 1071  sudo journalctl _UID=$(id)
+ 1072  sudo journalctl _UID=$(uid)
+ 1073  sudo journalctl _UID=${uid}
+ 1074  sudo journalctl _UID=1000
+ 1075  journalctl
+ 1076  pgrep sshd
+ 1077  journalctl -x
+ 1078  sudo journalctl -x
+ 1079  journalctl --list-catalog
+ 1080  sudo journalctl --list-catalog
+ 1081  journalctl --disk-usage
+ 1082  sudo journalctl --disk-usage
+ 1083  sudo apt install systemd-container
+ 1084  sudo apt install debootstrap
+ 1085  sudo debootstrap --arch=amd64 buster /var/lib/machines/buster1
+ 1086  sudo -s
+ 1087  machinectl list-images
+ 1088  udo debootstrap --arch=amd64 jammy /var/lib/machines/jammy1
+ 1089  sudo debootstrap --arch=amd64 jammy /var/lib/machines/jammy1
+ 1090  ls -la /var/lib/machines/jammy1
+ 1091  ls -la /var/lib/machines/
+ 1092  ls -la /var/lib/
+ 1093  mkdir /var/lib/machines/
+ 1094  ls -la /var/lib/machines/
+ 1095  sudo ls -la /var/lib/machines/
+ 1096  sudo ls -la /var/lib/machines/buster1
+ 1097  sudo ls -la /var/lib/machines/jammy1
+ 1098  sudo debootstrap --arch=amd64 jammy /var/lib/machines/jammy1
+ 1099  sudo -s
+ 1100  ls -la
+ 1101  history 
+ 1102  script -t/home/rob/hillel/dz5.script.time /home/rob/hillel/dz5.script
+ 1103  history 200
+ 1104  history 200 > hillel/dz5.history.txt
