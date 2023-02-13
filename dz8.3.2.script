@@ -1,0 +1,222 @@
+Script started on 2023-02-13 18:51:21+00:00 [TERM="tmux-256color" TTY="/dev/pts/2" COLUMNS="238" LINES="26"]
+[01;32mrob@ansible[00m:[01;34m~[00m$ cd kubespray/inventory/mycluster/
+[01;32mrob@ansible[00m:[01;34m~/kubespray/inventory/mycluster[00m$ head -30 hosts.yaml 
+all:
+  hosts:
+    node1:
+      ansible_host: 192.168.5.41
+      ip: 192.168.5.41
+      access_ip: 192.168.5.41
+    node2:
+      ansible_host: 192.168.5.42
+      ip: 192.168.5.42
+      access_ip: 192.168.5.42
+    node3:
+      ansible_host: 192.168.5.43
+      ip: 192.168.5.43
+      access_ip: 192.168.5.43
+    node4:
+      ansible_host: 192.168.5.44
+      ip: 192.168.5.44
+      access_ip: 192.168.5.44
+    node5:
+      ansible_host: 192.168.5.45
+      ip: 192.168.5.45
+      access_ip: 192.168.5.45
+  children:
+    kube_control_plane:
+      hosts:
+        node1:
+        node2:
+    kube_node:
+      hosts:
+        node1:
+[01;32mrob@ansible[00m:[01;34m~/kubespray/inventory/mycluster[00m$ cd
+[01;32mrob@ansible[00m:[01;34m~[00m$ [Kkubectl get nodes -o wide
+NAME    STATUS   ROLES           AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION    CONTAINER-RUNTIME
+node1   Ready    control-plane   13d   v1.25.6   192.168.5.41   <none>        Debian GNU/Linux 11 (bullseye)   5.10.0-21-amd64   containerd://1.6.15
+node2   Ready    control-plane   13d   v1.25.6   192.168.5.42   <none>        Debian GNU/Linux 11 (bullseye)   5.10.0-21-amd64   containerd://1.6.15
+node3   Ready    <none>          13d   v1.25.6   192.168.5.43   <none>        Debian GNU/Linux 11 (bullseye)   5.10.0-21-amd64   containerd://1.6.15
+node4   Ready    <none>          8d    v1.25.6   192.168.5.44   <none>        Debian GNU/Linux 11 (bullseye)   5.10.0-21-amd64   containerd://1.6.15
+node5   Ready    <none>          8d    v1.25.6   192.168.5.45   <none>        Debian GNU/Linux 11 (bullseye)   5.10.0-21-amd64   containerd://1.6.15
+[01;32mrob@ansible[00m:[01;34m~[00m$ kubectl get all -A
+NAMESPACE              NAME                                             READY   STATUS                   RESTARTS     AGE
+ingress-nginx          pod/ingress-nginx-controller-58hbw               1/1     Running                  0            13d
+ingress-nginx          pod/ingress-nginx-controller-btlvh               1/1     Running                  0            8d
+ingress-nginx          pod/ingress-nginx-controller-d9jw5               1/1     Running                  0            6d8h
+ingress-nginx          pod/ingress-nginx-controller-gw8mm               1/1     Running                  0            8d
+ingress-nginx          pod/ingress-nginx-controller-mdjrn               1/1     Running                  0            6d8h
+kube-system            pod/calico-kube-controllers-75748cc9fd-fcd52     1/1     Running                  0            13d
+kube-system            pod/calico-node-4k64w                            1/1     Running                  0            13d
+kube-system            pod/calico-node-55p42                            1/1     Running                  0            13d
+kube-system            pod/calico-node-6cv7s                            1/1     Running                  0            8d
+kube-system            pod/calico-node-fcct8                            1/1     Running                  0            8d
+kube-system            pod/calico-node-swjh2                            1/1     Running                  0            13d
+kube-system            pod/coredns-588bb58b94-72v2l                     1/1     Running                  0            13d
+kube-system            pod/coredns-588bb58b94-vbhsf                     1/1     Running                  0            13d
+kube-system            pod/dns-autoscaler-5b9959d7fc-ltbst              1/1     Running                  0            13d
+kube-system            pod/kube-apiserver-node1                         1/1     Running                  1            13d
+kube-system            pod/kube-apiserver-node2                         1/1     Running                  1            13d
+kube-system            pod/kube-controller-manager-node1                1/1     Running                  6 (8d ago)   13d
+kube-system            pod/kube-controller-manager-node2                1/1     Running                  8 (8d ago)   13d
+kube-system            pod/kube-proxy-cz5v7                             1/1     Running                  0            8d
+kube-system            pod/kube-proxy-g2f4x                             1/1     Running                  0            8d
+kube-system            pod/kube-proxy-t8h2g                             1/1     Running                  0            8d
+kube-system            pod/kube-proxy-wv8q4                             1/1     Running                  0            8d
+kube-system            pod/kube-proxy-xvnrv                             1/1     Running                  0            8d
+kube-system            pod/kube-scheduler-node1                         1/1     Running                  5 (8d ago)   13d
+kube-system            pod/kube-scheduler-node2                         1/1     Running                  6 (8d ago)   13d
+kube-system            pod/nginx-proxy-node3                            1/1     Running                  0            13d
+kube-system            pod/nginx-proxy-node4                            1/1     Running                  0            8d
+kube-system            pod/nginx-proxy-node5                            1/1     Running                  0            8d
+kube-system            pod/nodelocaldns-54kpt                           1/1     Running                  0            8d
+kube-system            pod/nodelocaldns-dsfq7                           1/1     Running                  0            13d
+kube-system            pod/nodelocaldns-qtk8r                           1/1     Running                  0            13d
+kube-system            pod/nodelocaldns-thlss                           1/1     Running                  0            8d
+kube-system            pod/nodelocaldns-xgpzh                           1/1     Running                  0            13d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-29h5r   0/1     Error                    0            9d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-2dwkx   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-2m2hr   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-2p42c   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-2s4jl   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-48c89   0/1     ContainerStatusUnknown   1            10d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-4tzc9   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-5qhb9   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-5qzfq   0/1     Error                    0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-6dcpw   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-6jx54   0/1     Evicted                  0            9d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-6kmj2   0/1     Evicted                  0            9d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-6kqcz   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-7266z   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-72pdc   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-72pht   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-7bkvf   0/1     Error                    0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-7sj9f   0/1     Error                    0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-88h4q   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-8pldf   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-98jlp   0/1     ContainerStatusUnknown   1            13d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-bs5xd   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-bsmqb   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-bwt4l   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-cfz9k   0/1     ContainerStatusUnknown   1            9d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-cpl7c   0/1     ContainerStatusUnknown   1            13d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-cvjbb   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-dpw98   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-dtx44   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-f9rjq   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-fhqd9   0/1     ContainerStatusUnknown   1            13d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-gcr6b   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-jfb9c   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-js6lx   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-l82fh   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-lfjwr   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-ll2b6   0/1     ContainerStatusUnknown   1            10d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-lm5l7   0/1     Error                    0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-lts76   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-lxg26   0/1     ContainerStatusUnknown   1            9d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-lzjvd   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-nq6wj   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-nzp2z   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-pv6fx   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-qcmdr   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-rqk7g   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-rwnmt   1/1     Running                  0            6d8h
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-tbzqf   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-vkqwg   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-vphbk   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-wpw5j   0/1     ContainerStatusUnknown   1            9d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-wwv6t   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-xb264   0/1     Error                    0            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-xj8jl   0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-zbv58   0/1     ContainerStatusUnknown   1            9d
+kubernetes-dashboard   pod/dashboard-metrics-scraper-64bcc67c9c-zltnb   0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-2gjn6         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-2jglf         0/1     Evicted                  0            10d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-2l7hz         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-2wmn9         0/1     ContainerStatusUnknown   1            13d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-2zn8p         0/1     ContainerStatusUnknown   1            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-4ntln         0/1     Error                    0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-5frkm         0/1     ContainerStatusUnknown   1            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-5mlbv         0/1     Evicted                  0            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-675mb         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-6875q         0/1     ContainerStatusUnknown   1            13d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-6gtpg         0/1     ContainerStatusUnknown   1            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-7c7c2         0/1     Evicted                  0            10d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-7gvbf         0/1     Evicted                  0            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-7sgrn         0/1     Evicted                  0            10d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-8mp5b         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-8xqjb         0/1     Error                    0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-952kt         0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-95dmj         0/1     Error                    0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-97j68         0/1     ContainerStatusUnknown   1            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-97nlm         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-9j76k         0/1     Evicted                  0            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-9sjsf         0/1     Error                    0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-bvkt2         0/1     ContainerStatusUnknown   1            10d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-bw8tv         0/1     Evicted                  0            10d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-dg68l         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-dqrxz         0/1     Error                    0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-f7vfl         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-fl7b5         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-fqz77         0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-fvnzj         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-gcjkq         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-gt48n         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-gtqvp         0/1     ContainerStatusUnknown   1            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-hkmq8         0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-hpm6h         0/1     Error                    0            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-k2n5p         0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-kg745         1/1     Running                  0            6d8h
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-khq8l         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-kkwx9         0/1     Error                    0            13d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-l4vps         0/1     Error                    0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-lgxq9         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-mtczd         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-mxtmc         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-pd5h2         0/1     Evicted                  0            10d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-prz9r         0/1     Evicted                  0            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-qgng5         0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-rl5cv         0/1     Evicted                  0            10d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-rwlq9         0/1     Evicted                  0            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-s8j9d         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-st594         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-stjrz         0/1     Evicted                  0            10d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-t65pw         0/1     Evicted                  0            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-vr2wm         0/1     Evicted                  0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-wjm2j         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-wjxr8         0/1     Error                    0            10d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-wxgbx         0/1     Evicted                  0            9d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-x4ssp         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-xbfxh         0/1     ContainerStatusUnknown   0            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-xndnv         0/1     ContainerStatusUnknown   1            8d
+kubernetes-dashboard   pod/kubernetes-dashboard-5c8bd6b59-z4cqx         0/1     Evicted                  0            10d
+
+NAMESPACE              NAME                                TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                  AGE
+default                service/kubernetes                  ClusterIP   10.233.0.1      <none>        443/TCP                  13d
+kube-system            service/coredns                     ClusterIP   10.233.0.3      <none>        53/UDP,53/TCP,9153/TCP   13d
+kubernetes-dashboard   service/dashboard-metrics-scraper   ClusterIP   10.233.36.77    <none>        8000/TCP                 13d
+kubernetes-dashboard   service/kubernetes-dashboard        ClusterIP   10.233.38.138   <none>        443/TCP                  13d
+
+NAMESPACE       NAME                                      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+ingress-nginx   daemonset.apps/ingress-nginx-controller   5         5         5       5            5           kubernetes.io/os=linux   13d
+kube-system     daemonset.apps/calico-node                5         5         5       5            5           kubernetes.io/os=linux   13d
+kube-system     daemonset.apps/kube-proxy                 5         5         5       5            5           kubernetes.io/os=linux   13d
+kube-system     daemonset.apps/nodelocaldns               5         5         5       5            5           kubernetes.io/os=linux   13d
+
+NAMESPACE              NAME                                        READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system            deployment.apps/calico-kube-controllers     1/1     1            1           13d
+kube-system            deployment.apps/coredns                     2/2     2            2           13d
+kube-system            deployment.apps/dns-autoscaler              1/1     1            1           13d
+kubernetes-dashboard   deployment.apps/dashboard-metrics-scraper   1/1     1            1           13d
+kubernetes-dashboard   deployment.apps/kubernetes-dashboard        1/1     1            1           13d
+
+NAMESPACE              NAME                                                   DESIRED   CURRENT   READY   AGE
+kube-system            replicaset.apps/calico-kube-controllers-75748cc9fd     1         1         1       13d
+kube-system            replicaset.apps/coredns-588bb58b94                     2         2         2       13d
+kube-system            replicaset.apps/dns-autoscaler-5b9959d7fc              1         1         1       13d
+kubernetes-dashboard   replicaset.apps/dashboard-metrics-scraper-64bcc67c9c   1         1         1       13d
+kubernetes-dashboard   replicaset.apps/kubernetes-dashboard-5c8bd6b59         1         1         1       13d
+[01;32mrob@ansible[00m:[01;34m~[00m$ exit
+exit
+
+Script done on 2023-02-13 18:52:16+00:00 [COMMAND_EXIT_CODE="0"]
