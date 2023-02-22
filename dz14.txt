@@ -1,2 +1,2 @@
-New changes in this file
-One more string 
+One more string
+new_feature 
