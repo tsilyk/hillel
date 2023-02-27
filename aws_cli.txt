@@ -1,0 +1,71 @@
+Create a VPC with a 10.0.0.0/16 CIDR block using the following create-vpc
+command.
+aws ec2 create-vpc --cidr-block i192.168.0.0/16 --query Vpc.VpcId --output text
+
+#aws ec2 delete-vpc --vpc-id vpc-0393f6239298fcbe4
+
+vpc-025ca4a0014374ad2
+
+Using the VPC ID from the previous step, create a subnet with a 10.0.1.0/24
+CIDR block using the following create-subnet command.
+
+aws ec2 create-subnet --vpc-id vpc-025ca4a0014374ad2 --cidr-block 192.168.0.0/24
+
+Create an internet gateway using the following create-internet-gateway command.
+
+aws ec2 create-subnet --vpc-id vpc-025ca4a0014374ad2 --cidr-block 192.168.1.0/24
+
+Create an internet gateway using the following create-internet-gateway
+command.
+
+aws ec2 create-internet-gateway --query InternetGateway.InternetGatewayId
+--output text
+
+Using the ID from the previous step, attach the internet gateway to your VPC
+using the following attach-internet-gateway command.
+
+
+aws ec2 attach-internet-gateway --vpc-id vpc-025ca4a0014374ad2 --internet-gateway-id
+igw-03feb1bbe8aa0f334
+
+Create a custom route table for your VPC using the following
+create-route-table command.
+
+aws ec2 create-route-table --vpc-id vpc-025ca4a0014374ad2 --query
+RouteTable.RouteTableId --output text
+
+rtb-03659ac9ff9b4f635
+
+Create a route in the route table that points all traffic (0.0.0.0/0) to the
+internet gateway using the following create-route command.
+
+aws ec2 create-route --route-table-id rtb-03659ac9ff9b4f635
+--destination-cidr-block 0.0.0.0/0 --gateway-id igw-03feb1bbe8aa0f334
+
+aws ec2 describe-route-tables --route-table-id rtb-03659ac9ff9b4f635
+
+
+aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-025ca4a0014374ad2" --query
+"Subnets[*].{ID:SubnetId,CIDR:CidrBlock}"
+
+
+aws ec2 associate-route-table  --subnet-id subnet-0b43ab4a2e11d947b
+--route-table-id rtb-03659ac9ff9b4f635
+
+aws ec2 modify-subnet-attribute --subnet-id subnet-0b43ab4a2e11d947b 
+--map-public-ip-on-launch
+
+aws ec2 create-key-pair --key-name MyKeyPair --query "KeyMaterial" --output
+text > MyKeyPair.pem
+
+chmod 400 MyKeyPair.pem
+
+aws ec2 create-security-group --group-name SSHAccess --description "Security
+group for SSH access" --vpc-id vpc-025ca4a0014374ad2
+
+aws ec2 authorize-security-group-ingress --group-id sg-093f7636c75b8256e --protocol tcp
+--port 22 --cidr 0.0.0.0/0
+
+aws ec2 run-instances --image-id ami-08f13e5792295e1b2 --count 1 --instance-type
+t2.micro --key-name MyKeyPair --security-group-ids sg-093f7636c75b8256e --subnet-id
+subnet-0b43ab4a2e11d947b
