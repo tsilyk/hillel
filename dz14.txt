@@ -1,0 +1,2 @@
+One more string
+new_feature 
